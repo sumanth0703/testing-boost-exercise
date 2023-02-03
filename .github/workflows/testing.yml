@@ -45,5 +45,6 @@ jobs:
       - name: "Extract build files"    
         run: tar -xvf build_files.tar build
       - name: "Run tests and get successful"
+        working-directory: ./build
         run: make test
   
