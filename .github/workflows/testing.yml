@@ -1,0 +1,48 @@
+name: SSE CI/CD
+
+on: [push, pull_request]
+
+jobs:
+  Style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Install style checker clang-format"
+        run: sudo apt install clang-format
+      - name: "Run style check"
+        run: clang-format -i src/*.cpp src/*.hpp
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name : "Install libraries required"
+        run : sudo apt install cmake gcc libeigen3-dev libyaml-cpp-dev libboost-all-dev
+      - name : "Make a build folder"
+        run: mkdir build
+      - name : "Run cmake"
+        run: cmkae ..
+      - name: "Run make"
+        run: make -j
+      - name: "Build files"
+        run: tar -cvf build_files.tar build
+      - name: "Upload build_files as Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: build_files.tar
+          retention-days: 1
+  Test:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Recover the artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: my_artifact
+      - name: "Extract build files"    
+        run: tar -cvf build_files.tar build
+      - name: "Run tests and get successful"
+        run: make test
+                    
+  
