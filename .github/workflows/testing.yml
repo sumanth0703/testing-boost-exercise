@@ -43,7 +43,7 @@ jobs:
         with:
           name: my-artifact
       - name: "Extract build files"    
-        run: tar -cvf build_files.tar build
+        run: tar -xvf build_files.tar build
       - name: "Run tests and get successful"
         run: make test
   
