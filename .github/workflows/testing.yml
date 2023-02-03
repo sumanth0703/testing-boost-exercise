@@ -41,7 +41,7 @@ jobs:
       - name: "Recover the artifacts"
         uses: actions/download-artifact@v3
         with:
-          name: my_artifact
+          name: my-artifact
       - name: "Extract build files"    
         run: tar -cvf build_files.tar build
       - name: "Run tests and get successful"
