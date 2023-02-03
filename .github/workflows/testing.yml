@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: "Install style checker clang-format"
-        run: sudo apt install clang-format
+        run: sudo apt update && sudo apt install clang-format
       - name: "Run style check"
         run: clang-format -i src/*.cpp src/*.hpp
   build:
@@ -19,8 +19,10 @@ jobs:
         run : sudo apt update && sudo apt install cmake gcc libeigen3-dev libyaml-cpp-dev libboost-all-dev
       - name : "Make a build folder"
         run: mkdir build
+      - name : 'Enter build directory'
+        run : cd build
       - name : "Run cmake"
-        run: cmkae ..
+        run: cmake ..
       - name: "Run make"
         run: make -j
       - name: "Build files"
