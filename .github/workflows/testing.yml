@@ -33,29 +33,17 @@ jobs:
           name: my-artifact
           path: build_files.tar
           retention-days: 1
-  coverage_report:
-    needs: test
+  test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - name: "Recover the artifacts"
+        uses: actions/download-artifact@v3
         with:
-          python-version: '3.x'
-      - name : "Install coverage"
-        run: pip install -U coverage
-      - name: "Recover the coverage report from .coverage"
-        uses: actions/download-artifact@v2
-        with:
-          name: Coverage-Report
-      - name: "Run coverage"    
-        run: coverage report
-      - name: "Converting to xml"
-        run: coverage xml
-      - name: "Adding converted report"
-        uses: actions/upload-artifact@v2
-        with:
-          name: Coverage-Report
-          path: coverage.xml
-          retention-days: 14
-                    
+          name: my_artifact
+      - name: "Extract build files"    
+        run: tar -cvf build_files.tar build
+      - name: "Run tests and get successful"
+        run: make test
   
