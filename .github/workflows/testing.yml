@@ -3,17 +3,14 @@ name: SSE CI/CD
 on: [push, pull_request]
 
 jobs:
-  style_check:
+  style:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - name: "Install style checker"
-        run: pip install black
+      - uses: actions/checkout@v3
+      - name: "Install style checker clang-format"
+        run: sudo apt install clang-format
       - name: "Run style check"
-        run: black --check .
+        run: clang-format -i src/*.cpp src/*.hpp
   test:
     runs-on: ubuntu-latest
     steps:
