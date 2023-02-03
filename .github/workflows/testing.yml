@@ -11,28 +11,25 @@ jobs:
         run: sudo apt install clang-format
       - name: "Run style check"
         run: clang-format -i src/*.cpp src/*.hpp
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - name : "Install libraries required"
+        run : sudo apt install cmake gcc libeigen3-dev libyaml-cpp-dev libboost-all-dev
+      - name : "Make a build folder"
+        run: mkdir build
+      - name : "Run cmake"
+        run: cmkae ..
+      - name: "Run make"
+        run: make -j
+      - name: "Build files"
+        run: tar -cvf build_files.tar build
+      - name: "Upload build_files as Artifact"
+        uses: actions/upload-artifact@v3
         with:
-          python-version: '3.x'
-      - name : "Install libraries required to run pytest on diffusion code"
-        run : pip install numpy matplotlib
-      - name : "Install pytest"
-        run: pip install -U pytest
-      - name : "Install coverage"
-        run: pip install -U coverage
-      - name: "Run pytest"
-        run: python -m pytest
-      - name: "Run coverage"
-        run: coverage run -m pytest
-      - name: "Adding report to .coverage location"
-        uses: actions/upload-artifact@v2
-        with:
-          name: Coverage-Report
-          path: .coverage
+          name: my-artifact
+          path: build_files.tar
           retention-days: 1
   coverage_report:
     needs: test
