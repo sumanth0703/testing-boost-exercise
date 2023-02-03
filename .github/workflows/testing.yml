@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name : "Install libraries required"
-        run : sudo apt install cmake gcc libeigen3-dev libyaml-cpp-dev libboost-all-dev
+        run : sudo apt update && sudo apt install cmake gcc libeigen3-dev libyaml-cpp-dev libboost-all-dev
       - name : "Make a build folder"
         run: mkdir build
       - name : "Run cmake"
