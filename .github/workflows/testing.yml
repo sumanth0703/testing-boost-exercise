@@ -10,7 +10,7 @@ jobs:
       - name: "Install style checker clang-format"
         run: sudo apt update && sudo apt install clang-format
       - name: "Run style check"
-        run: clang-format -i src/*.cpp src/*.hpp
+        run: clang-format -i src/*.cpp src/*.hpp tests/*.cpp
   build:
     runs-on: ubuntu-latest
     steps:
